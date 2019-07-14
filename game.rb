@@ -76,33 +76,29 @@ class Game
         return content
     end
 
+    # need optimization there is a better way to do this
     def randomize_word(word)
-        possible_combinations = Array.new
-        generate_combinations(possible_combinations, word.length, Array.new)
+        initial_position = Array.new
 
-        result = ''
-
-        loop do
-            random = rand(possible_combinations.length)
-            result = build_word(word, possible_combinations[random]).join()
-
-            break if result != word
-        end
+        random_position = randomize_char_position(word)
+        result = build_word(word, random_position)
 
         return result
     end
 
-    def generate_combinations(results, length, temp)
-        if temp.length == length
-            results << Array.new(temp)
-        else
-            for i in 0...length do
-                next if temp.include?(i)
-                temp << i
-                generate_combinations(results, length, temp)
-                temp.pop
+    def randomize_char_position(word)
+        random_position = Array.new
+
+        while true do
+            index = rand(word.length)
+            if !random_position.include?(index)
+                random_position << index
             end
+
+            break if random_position.length == word.length
         end
+
+        return random_position
     end
 
     def build_word(word, positions)
@@ -112,6 +108,6 @@ class Game
             result[i] = word[positions[i]]
         end
 
-        return result
+        return result.join()
     end
 end
