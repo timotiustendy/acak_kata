@@ -32,7 +32,7 @@ class Game
     end
 
     def offer_clues
-        print("Tampilkan bantuan? (y/n)") if (self.wrong_count >= 3)
+        puts("Tampilkan bantuan? (y/n)") if (self.wrong_count >= 3)
     end
 
     def clues_available?
@@ -61,8 +61,14 @@ class Game
     end
 
     def wrong_answer
-        puts("SALAH! Silakan coba lagi")
         self.wrong_count += 1
+
+        if (self.wrong_count < self.current_word.original_word.length)
+            puts("SALAH! Silakan coba lagi")
+        else
+            puts("SALAH! Silakan coba lagi (ketik 'exit' untuk berhenti bermain.)")
+        end
+
     end
 
     def select_word

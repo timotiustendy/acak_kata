@@ -16,6 +16,8 @@ class Question
             end
         end
 
+        puts('')
+
         increase_clue_length
     end
 
