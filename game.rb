@@ -2,7 +2,7 @@ require './player'
 require './question'
 
 class Game
-    attr_accessor :player, :current_word, :question_set, :finished
+    attr_accessor :player, :current_word, :question_set, :finished, :wrong_count
 
     def initialize
         self.player = Player.new
@@ -12,6 +12,7 @@ class Game
 
         self.current_word = select_word
         self.finished = false
+        self.wrong_count = 0
     end
 
     def show_question
@@ -30,6 +31,18 @@ class Game
         return self.finished
     end
 
+    def offer_clues
+        puts("Tampilkan bantuan? (y/n)") if (self.wrong_count >= 3)
+    end
+
+    def clues_available?
+        return self.wrong_count >= 3
+    end
+
+    def show_clue(answer)
+        self.current_word.show_clue if answer.downcase == 'y'
+    end
+
     private
     def correct_answer
         self.player.increase_score
@@ -42,12 +55,20 @@ class Game
         end
 
         self.current_word = select_word
+        self.wrong_count = 0
 
         puts("BENAR point anda: #{self.player.score}!")
     end
 
     def wrong_answer
-        puts("SALAH! Silakan coba lagi")
+        self.wrong_count += 1
+
+        if (self.wrong_count < self.current_word.original_word.length)
+            puts("SALAH! Silakan coba lagi")
+        else
+            puts("SALAH! Silakan coba lagi (ketik 'exit' untuk berhenti bermain.)")
+        end
+
     end
 
     def select_word

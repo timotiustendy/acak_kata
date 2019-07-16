@@ -1,9 +1,24 @@
 class Question
-    attr_accessor :original_word, :randomized_word
+    attr_accessor :original_word, :randomized_word, :clues_length
 
     def initialize(word)
         self.original_word = word
         self.randomized_word = randomize_word(word)
+        self.clues_length = 0
+    end
+
+    def show_clue
+        for i in 0...self.original_word.length do
+            if (i <= self.clues_length)
+                print(self.original_word[i])
+            else
+                print("_")
+            end
+        end
+
+        puts('')
+
+        increase_clue_length
     end
 
     private
@@ -44,5 +59,13 @@ class Question
         end
 
         return result.join()
+    end
+
+    def increase_clue_length
+        if (self.original_word.length > 3)
+            self.clues_length += 1 if self.clues_length < self.original_word.length - 4
+        else
+            self.clues_length += 1 if self.clues_length < self.original_word.length - 3
+        end
     end
 end
